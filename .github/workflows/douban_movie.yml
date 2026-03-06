@@ -31,10 +31,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip uninstall -y douban2notion
           pip install .
       - name: douban movie sync
         run: |
-          douban "movie"
+          export PYTHONPATH=$PYTHONPATH:.
+          python3 -m douban2notion.douban "movie"
       - name: Remove folder
         run: rm -rf ./OUT_FOLDER/movie
       - name: Set default year if not provided
