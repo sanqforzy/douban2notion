@@ -28,11 +28,13 @@ jobs:
         with:
           python-version: 3.9
       - name: Install dependencies
+       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip uninstall -y douban2notion
-          pip install .
+          # 核心必杀技：直接找到插件安装位置，用本地改好的文件覆盖它
+          SITE_PKG=$(python -c "import douban2notion, os; print(os.path.dirname(douban2notion.__file__))")
+          cp douban2notion/utils.py "$SITE_PKG/utils.py"
       - name: douban movie sync
         run: |
           export PYTHONPATH=$PYTHONPATH:.
